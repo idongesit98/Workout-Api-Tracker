@@ -20,10 +20,15 @@ UserModel.hasMany(ScheduleModel, {foreignKey:"userId"})
 ScheduleModel.belongsTo(WorkoutModel, {foreignKey: "workoutId", onDelete:"CASCADE"});
 WorkoutModel.hasMany(ScheduleModel, {foreignKey: "workoutId"})
 
+ProgressModel.belongsTo(WorkoutModel,{foreignKey: "workoutId",onDelete:"CASCADE"})
+WorkoutModel.hasMany(ProgressModel, {foreignKey:"workoutId"})
+
 const syncDatabase = async () =>{
     try {
-        await sequelize.sync({force: false});
-        console.log("Database synced successfully")
+        sequelize.sync({ alter: true }).then(() => {
+            console.log("Database structure updated!");
+            console.log("Database synced successfully")
+          });          
     } catch (error) {
         console.error("Error syncing database:", error)
     }

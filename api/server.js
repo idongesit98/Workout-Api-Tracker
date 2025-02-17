@@ -6,4 +6,5 @@ syncDatabase()
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`)
+    console.log(`Swagger Docs at http://localhost:${PORT}/api-docs`)
 })

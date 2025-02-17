@@ -29,6 +29,15 @@ Progress.init(
         key:"userId",
       },
       onDelete:"CASCADE"
+    },
+    workoutId:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      references:{
+        model:"Workouts",
+        key:"workoutId",
+      },
+      onDelete:"CASCADE"
     }
   },
   {

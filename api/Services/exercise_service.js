@@ -25,7 +25,9 @@
 
  const GetExercise = async({exerciseId}) =>{
     try {
-        const exercise = await ExerciseModel.findByPk(exerciseId)
+        const exercise = await ExerciseModel.findByPk({
+            where:{exerciseId}
+        })
         if (!exercise) {
             const error = new Error("Exercise not found")
             error.type = "Not found"
