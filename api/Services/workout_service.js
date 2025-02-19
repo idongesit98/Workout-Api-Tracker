@@ -111,23 +111,34 @@ const UpdateWorkout = async({workoutId,title,description,date}) =>{
 }
 
 const DeleteWorkout = async({workoutId}) =>{
-    const deleteWorkout = WorkoutModel.findOne(workoutId)
+    try {
+        const deleteWorkout = await WorkoutModel.findByPk(workoutId)
 
-    if (!deleteWorkout) {
-        return{
-            code:404,
-            success:false,
-            message:"No workout found",
-            data:null
+        if (!deleteWorkout) {
+            return{
+                code:404,
+                success:false,
+                message:"No workout found",
+                data:null
+            }
         }
+        await deleteWorkout.destroy()
+        return{
+            code:200,
+            success:false,
+            message:"Workout deleted successfully",
+            data:{deleteWorkout}
+        }
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return {
+            code: 500,
+            success: false,
+            message: "An error occurred while deleting the user",
+            error: error.message
+        };
     }
-    (await deleteWorkout).destroy()
-    return{
-        code:200,
-        success:false,
-        message:"Workout deleted successfully",
-        data:{deleteWorkout}
-    }
+    
 }
 
 module.exports = {CreateWorkout,GetWorkout,GetAllWorkout,UpdateWorkout,DeleteWorkout}

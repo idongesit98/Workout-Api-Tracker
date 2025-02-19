@@ -25,7 +25,7 @@ WorkoutModel.hasMany(ProgressModel, {foreignKey:"workoutId"})
 
 const syncDatabase = async () =>{
     try {
-        sequelize.sync({ alter: true }).then(() => {
+        sequelize.sync({ alter: false }).then(() => {
             console.log("Database structure updated!");
             console.log("Database synced successfully")
           });          

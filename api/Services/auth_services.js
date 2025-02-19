@@ -142,8 +142,9 @@ const GetSingleUser = async({userId}) =>{
 }
 
 const UpdateUser = async({userId,first_name,last_name,email,phoneNumber,role}) =>{
-    const user = await UserModel.findByPk(userId)
     try {
+        const user = await UserModel.findByPk(userId)
+
         if (!user) {
             return{
                 code:404,
@@ -180,23 +181,31 @@ const UpdateUser = async({userId,first_name,last_name,email,phoneNumber,role}) =
 }
 
 const DeleteUser = async({userId}) =>{
-    const user = UserModel.findOne(userId)
-    
-    if (!user) {
+    try {
+        const user = await UserModel.findByPk(userId)
+        if (!user) {
+            return{
+                code:404,
+                success:false,
+                message:'User deleted successfully',
+                data:null
+            }    
+        }
+        await user.destroy()
         return{
-            code:404,
+            code:200,
             success:false,
-            message:'User deleted successfull',
-            data:null
-        }    
-    }
-   
-    await  user.destroy()
-    return{
-        code:200,
-        success:false,
-        message:"User deleted successfully",
-        data:{user}
+            message:"User deleted successfully",
+            data:{user}
+        }
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return {
+            code: 500,
+            success: false,
+            message: "An error occurred while deleting the user",
+            error: error.message
+        };
     }
 }
 module.exports = {Login,SignUp,GetAllUsers,addUserProfilePicture,GetSingleUser,DeleteUser,UpdateUser}

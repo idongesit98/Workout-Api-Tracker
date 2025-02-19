@@ -1,17 +1,19 @@
 const ScheduleModel = require("../Model/Schedule.model")
 
-const CreateSchedule = async ({scheduleDate,status}) => {
+const CreateSchedule = async ({scheduledDate,status,workoutId}) => {
     try {
         const newSchedule = await ScheduleModel.create({
-            scheduleDate,status
+            scheduledDate,status,workoutId
         })
 
-        const savedSchedule = await newSchedule.save()
+        //const savedSchedule = await newSchedule.save()
+        //Unnecessary cause .create, already saves an instance of the database
+
         return{
             code:201,
             success:true,
             message:"Schedule created successfully",
-            data:{savedSchedule}
+            data:{newSchedule}
         }
     } catch (error) {
         return{
@@ -22,9 +24,10 @@ const CreateSchedule = async ({scheduleDate,status}) => {
     }
 }
 
-const UpdateSchedule = async({scheduleId,scheduleDate,status}) =>{
-    const update = await ScheduleModel.findByPk(scheduleId)
+const UpdateSchedule = async({scheduleId,scheduledDate,status,workoutId}) =>{
     try {
+        const update = await ScheduleModel.findByPk(scheduleId)
+
         if (!update) {
             return{
                 code:404,
@@ -33,7 +36,7 @@ const UpdateSchedule = async({scheduleId,scheduleDate,status}) =>{
                 data:null
             }
         }
-        update.scheduleDate = scheduleDate || update.scheduleDate,
+        update.scheduledDate = scheduledDate || update.scheduledate,
         update.status = status || update.status
         update.updatedAt = new Date()
 
@@ -55,23 +58,34 @@ const UpdateSchedule = async({scheduleId,scheduleDate,status}) =>{
 }
 
 const DeleteSchedule = async({scheduleId}) =>{
-    const deleteSchedule = WorkoutModel.findOne(scheduleId)
+    try {
+        const deleteSchedule = await WorkoutModel.findOne(scheduleId)
 
-    if (!deleteSchedule) {
-        return{
-            code:404,
-            success:false,
-            message:"No workout found",
-            data:null
+        if (!deleteSchedule) {
+            return{
+                code:404,
+                success:false,
+                message:"No workout found",
+                data:null
+            }
         }
+        await deleteSchedule.destroy()
+        return{
+            code:200,
+            success:false,
+            message:"Workout deleted successfully",
+            data:{deleteSchedule}
+        }
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return {
+            code: 500,
+            success: false,
+            message: "An error occurred while deleting the schedule",
+            error: error.message
+        };
     }
-    (await deleteSchedule).destroy()
-    return{
-        code:200,
-        success:false,
-        message:"Workout deleted successfully",
-        data:{deleteSchedule}
-    }
+    
 }
 
 module.exports = {CreateSchedule,UpdateSchedule,DeleteSchedule}

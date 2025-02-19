@@ -1,3 +1,4 @@
+require("dotenv").config()
 const swaggerJsDocs = require("swagger-jsdoc");
 const swaggerAutogen = require("swagger-autogen")({openapi:"3.0.0",})
 
@@ -9,7 +10,7 @@ const doc = {
     },
     servers:[
         {
-            url:"http://localhost:4000",
+            url:process.env.SWAGGER_URL,
             description:"localserver",
         },
     ],
@@ -26,11 +27,8 @@ const doc = {
 }
 
 const outputFile = "./swagger-output.json";
-const routes = ["./routes/*.js"];
+const routes = ["./app.js","./routes/*.js"];
 
 swaggerAutogen(outputFile,routes,doc).then(()=>{
-    require("./app.js")
+    require("./server.js")
 })
-
-// const specs = swaggerJsDocs(options);
-// module.exports = specs;

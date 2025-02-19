@@ -112,24 +112,33 @@ const UpdateExercise = async({exerciseId,name,sets,reps,weight}) =>{
 }
 
 const DeleteExercise = async({exerciseId}) =>{
-    const exercise = ExerciseModel.findOne(exerciseId)
-
-    if (!exercise) {
-        return{
-            code:404,
-            success:false,
-            message:"Exercise not found",
-            data:null
+    try {
+        const exercise = await ExerciseModel.findOne(exerciseId)
+        if (!exercise) {
+            return{
+                code:404,
+                success:false,
+                message:"Exercise not found",
+                data:null
+            }
         }
+        await exercise.destroy()
+        return{
+            code:200,
+            success:false,
+            message:"Exercise deleted successfully",
+            data:{exercise}
+        }
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return {
+            code: 500,
+            success: false,
+            message: "An error occurred while deleting the exercise",
+            error: error.message
+        };
     }
-    (await exercise).destroy()
-
-    return{
-        code:200,
-        success:false,
-        message:"Exercise deleted successfully",
-        data:{exercise}
-    }
+    
 }
 
 module.exports = {CreateExercise,GetAllExercise,GetExercise,UpdateExercise,DeleteExercise}

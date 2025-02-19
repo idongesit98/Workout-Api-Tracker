@@ -3,17 +3,19 @@ const ScheduleService = require("../Services/schedule_services")
 const CreateSchedule = async(req,res) => {
     const payload = req.body
     const ScheduleResponse = await ScheduleService.CreateSchedule({
-        scheduleDate:payload.scheduleDate,
-        status:payload.status
+        scheduledDate:payload.scheduledDate,
+        status:payload.status,
+        workoutId:payload.workoutId
     });
     return res.status(ScheduleResponse.code).json(ScheduleResponse)
 }
 
 const UpdateSchedule = async(req,res) =>{
     const scheduleId = req.params.scheduleId
-    const{scheduleDate,status} = req.body
+    const{scheduledDate,status,workoutId} = req.body
+     
     const ScheduleResponse = await ScheduleService.UpdateSchedule({
-        scheduleId,scheduleDate,status
+        scheduleId,scheduledDate,status,workoutId
     })
     return res.status(ScheduleResponse.code).json(ScheduleResponse)
 }

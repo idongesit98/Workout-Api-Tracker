@@ -39,7 +39,7 @@ const GetUser = async(req,res) =>{
 }
 
 const UpdateUser = async(req,res) =>{
-    const userId = req.params.userId
+    const userId = parseInt(req.params.userId)
     const {first_name,last_name,email,phoneNumber,role} = req.body
 
     const UpdateResponse = await AuthService.UpdateUser({

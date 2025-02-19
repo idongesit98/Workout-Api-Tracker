@@ -34,10 +34,10 @@ const GetUserProgress = async({progressId}) =>{
     }
 }
 
-const GetLatestProgress = async({userId}) =>{
+const GetLatestProgress = async({progressId}) =>{
     try {
         const progress = await ProgressModel.findOne({
-            where:{userId},
+            where:{progressId},
             include: [{model:WorkoutModel}],
             order:[["date","DESC"]],
         });

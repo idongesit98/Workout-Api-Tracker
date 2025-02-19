@@ -15,14 +15,14 @@
  app.use(morgan("tiny"))
 
 
-//
+
 app.use('/auth',AuthRoutes)
 app.use('/exercise',ExerciseRoutes)
 app.use('/workout',WorkoutRoutes)
 app.use("/schedule",ScheduleRoute)
 app.use("/progress",ProgressRoute)
 
-app.use("/api-docs", swaggerUi.serve,swaggerUi.setup(swaggerdocs));
+app.use("/api-docs", swaggerUi.serve,swaggerUi.setup(swaggerdocs)); 
 
 app.get('/', (req, res) => {
     res.json({ message: "Welcome to Workout Tracker Api"}); // Remove extra space
