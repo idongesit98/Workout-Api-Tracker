@@ -1,6 +1,6 @@
 # Workout Tracker API
 ## Overview
-A backend system for a workout tracker application where users can sign up,log in, create workout plans, and track their progresss. The system will feature JWT authentication, CRUD opertions for workouts, and generate reports on past workouts.
+A backend system for a workout tracker application where users can sign up,log in, create workout plans, and track their progresss. The system will feature JWT authentication, CRUD opertions for workouts, and generate reports on past workouts. The project can be gotten here at [https://roadmap.sh/projects/fitness-workout-tracker]
 
 ## Features
 - Create Workout: Allow users to create workouts composed of multiple exercises
